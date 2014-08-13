@@ -1,0 +1,23 @@
+<html>
+<head>
+  <title>Nuxeo Web Components - Part II</title>
+  <script src="bower_components/platform/platform.js"></script>
+  <script src="bower_components/polymer/polymer.js"></script>
+</head>
+<body>
+  <polymer-element name="my-button" extends="button" attributes="loudness" on-click="{{scream}}">
+    <template>
+      Scream
+    </template>
+    <script>
+      Polymer('my-button', {
+        loudness: 25,
+        scream: function() {
+          this.style.fontSize = this.loudness + 'px';
+        }
+      });
+    </script>
+  </polymer-element>
+  <button is="my-button"></button>
+</body>
+</html>

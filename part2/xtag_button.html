@@ -1,0 +1,24 @@
+<html>
+<head>
+  <title>Nuxeo Web Components - Part II</title>
+  <script src="bower_components/x-tag-core/dist/x-tag-core.js"></script>
+</head>
+<body>
+  <script>
+    xtag.register('my-button', {
+      extends: 'button',
+      methods: {
+        scream: function() {
+          this.style.fontSize = this.attributes.loudness.value + 'px';
+        },
+      },
+      events: {
+        click: function() {
+          this.scream();
+        }
+      }
+    });
+  </script>
+  <button is="my-button" loudness="25">Scream</button>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "nuxeo-web-components-series",
+  "version": "0.0.0",
+  "authors": [
+    "Nelson Silva <nelson.silva@inevo.pt>"
+  ],
+  "license": "LGPL",
+  "private": true,
+  "dependencies": {
+    "CustomElements": "Polymer/CustomElements#0.3.5",
+    "x-tag-core": "~1.0.0-beta-5",
+    "polymer": "Polymer/Polymer#0.3.5"
+  }
+}
