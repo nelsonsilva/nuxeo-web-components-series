@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+<head>
+  <title>Nuxeo REST Users</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="import" href="components/polymer/polymer.html">
+  <link rel="import" href="components/core-scaffold/core-scaffold.html">
+  <link rel="import" href="components/core-header-panel/core-header-panel.html">
+  <link rel="import" href="components/core-list/core-list.html">
+  <link rel="import" href="components/core-menu/core-menu.html">
+  <link rel="import" href="components/core-item/core-item.html">
+  <link rel="import" href="components/core-input/core-input.html">
+  <link rel="import" href="components/core-field/core-field.html">
+
+  <link rel="import" href="components/paper-button/paper-button.html">
+  <link rel="import" href="components/paper-dialog/paper-dialog-transition.html">
+  <link rel="import" href="components/paper-dialog/paper-dialog.html">
+
+  <link rel="import" href="components/nuxeo-elements/nx-connection.html">
+  <link rel="import" href="components/nuxeo-elements/nx-resource.html">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'RobotoDraft', sans-serif;
+    }
+
+    core-scaffold {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    core-toolbar {
+        background-color: #ccc;
+    }
+
+    core-scaffold::shadow [main] core-toolbar {
+      background-color: #ccc;
+    }
+
+    core-input {
+      border-bottom: 1px dotted black;
+    }
+
+    .container {
+        width: 80%;
+        margin: 50px auto;
+    }
+
+    .card {
+        display: block;
+        position: relative;
+        background-color: white;
+        padding: 10px;
+        margin-bottom: 20px;
+        width: 96%;
+        height: 30px;
+    }
+
+    paper-fab {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+    }
+
+    paper-dialog paper-button {
+      font-weight: bold;
+    }
+
+    paper-button[default] {
+      color: #4285f4;
+    }
+  </style>
+</head>
+<body unresolved>
+
+<nx-connection url="http://demo.nuxeo.com/nuxeo"></nx-connection>
+
+<template is="auto-binding">
+  <core-scaffold>
+    <core-header-panel navigation flex mode="seamed">
+      <core-toolbar></core-toolbar>
+      <core-menu>
+        <core-item icon="account-box" label="Users"><a href="#"></a></core-item>
+      </core-menu>
+    </core-header-panel>
+    <div tool>User</div>
+    <div tool class="search">
+      <core-field>
+        <core-icon icon="search"></core-icon>
+        <core-input value="{{filter}}" placeholder="Search..."></core-input>
+      </core-field>
+    </div>
+    <div class="container" layout vertical>
+
+      <nx-resource auto id="search" path="user/search" params='{"q": "{{filter}}"}' data='{{usersList}}'></nx-resource>
+
+      <nx-resource id="user" path="user/{{$.user.data.id}}"></nx-resource>
+
+      <core-list id="list" data="{{usersList.entries}}" on-core-activate="{{edit}}">
+        <template>
+          <div class="card">
+            <core-icon-button icon="account-box"></core-icon-button>
+            {{model.id}}
+          </div>
+        </template>
+      </core-list>
+    </div>
+  </core-scaffold>
+
+  <paper-dialog id="form" heading="Edit {{$.user.data.id}}" transition="paper-dialog-transition-center">
+
+    <!-- User Form -->
+    <div layout horizontal>
+      <label>Username: </label> {{$.user.data.properties.username}}
+    </div>
+    <core-field>
+      <label>First name: </label>
+      <core-input value="{{$.user.data.properties.firstName}}"></core-input>
+    </core-field>
+    <core-field>
+      <label>Last name: </label>
+      <core-input value="{{$.user.data.properties.lastName}}"></core-input>
+    </core-field>
+    <core-field>
+      <label>Email: </label>
+      <core-input value="{{$.user.data.properties.email}}"></core-input>
+    </core-field>
+
+    <paper-button label="Cancel" affirmative></paper-button>
+    <paper-button label="Save" affirmative default on-click="{{save}}"></paper-button>
+
+  </paper-dialog>
+
+</template>
+</body>
+<script>
+  var t = document.querySelector('template');
+  t.filter = '*';
+  t.edit = function(e, detail) {
+    t.$.user.data = detail.data;
+    t.$.form.toggle();
+  };
+  t.save = function() {
+    t.$.user.put();
+  };
+</script>
+
+</html>
